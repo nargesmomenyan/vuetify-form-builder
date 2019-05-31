@@ -3,8 +3,9 @@
     <v-form>
       <v-container grid-list-md fluid>
         <v-layout row wrap>
-          <v-flex xs6 md6>
+          <v-flex xs4 md4>
             <v-text-field
+              solo
               label="Label"
               v-model="control.label"
               v-validate="'required'"
@@ -12,8 +13,9 @@
             ></v-text-field>
             <span>{{ errors.first('Label') }}</span>
           </v-flex>
-          <v-flex xs6 md6>
+          <v-flex xs4 md4>
             <v-text-field
+              solo
               label="Model"
               v-model="control.model"
               v-validate="'required'"
@@ -21,8 +23,9 @@
             ></v-text-field>
             <span>{{ errors.first('Model') }}</span>
           </v-flex>
-          <v-flex xs6 md6>
+          <v-flex xs4 md4>
             <v-select
+              solo
               label="Type"
               :items="types"
               v-model="control.type"
@@ -31,38 +34,55 @@
             ></v-select>
             <span>{{ errors.first('Type') }}</span>
           </v-flex>
-          <v-flex xs6 md6>
-            <v-text-field label="Name" v-model="control.name" v-validate="'required'" name="Name"></v-text-field>
+          <v-flex xs4 md4>
+            <v-text-field
+              solo
+              label="Name"
+              v-model="control.name"
+              v-validate="'required'"
+              name="Name"
+            ></v-text-field>
             <span>{{ errors.first('Name') }}</span>
           </v-flex>
-
-          <v-flex xs6 md6>
-            <v-checkbox label="validation-required" v-model="control.required"></v-checkbox>
+          <v-flex xs4>
+            <v-text-field solo label="Items-Model" v-model="control.items"></v-text-field>
           </v-flex>
 
-          <v-flex xs6 md6>
-            <v-text-field label="validation-regex" v-model="control.regex"></v-text-field>
+          <v-flex xs4 md4>
+            <v-select solo label="Column Type" :items="columnTypes" v-model="control.columnType"></v-select>
           </v-flex>
 
-          <v-flex xs3 md3>
-            <v-select label="Column Type" :items="columnTypes" v-model="control.columnType"></v-select>
+          <v-flex xs4 md4>
+            <v-checkbox solo label="validation-required" v-model="control.required"></v-checkbox>
           </v-flex>
-          <v-flex xs3 md3>
-            <v-checkbox label="Hidden" v-model="control.hidden"></v-checkbox>
+
+          <v-flex xs4 md4>
+            <v-text-field solo label="validation-regex" v-model="control.regex"></v-text-field>
           </v-flex>
-          <v-flex xs3 md3>
-            <v-checkbox label="Enabled" v-model="control.enabled"></v-checkbox>
+
+          <v-flex xs2 md2>
+            <v-checkbox box label="Hidden" v-model="control.hidden"></v-checkbox>
           </v-flex>
-          <v-flex xs12 md12>
-            <v-btn color="primary" @click="add">Add Control</v-btn>
+          <v-flex xs2 md2>
+            <v-checkbox solo label="Enabled" v-model="control.enabled"></v-checkbox>
+          </v-flex>
+          <v-flex>
+            <v-spacer/>
+            <v-btn color="primary" style="float:right" @click="add">Add Control</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
     </v-form>
 
     <v-divider></v-divider>
+
     <v-card>
-      <FormVuetify :schema="schema"/>
+      <v-card-title primary-title style="background-color:#ccc">
+        <h4>Form</h4>
+      </v-card-title>
+      <v-card-text>
+        <FormVuetify :schema="schema"/>
+      </v-card-text>
     </v-card>
   </div>
 </template>
@@ -77,11 +97,11 @@ export default {
         "text",
         "text-area",
         "select",
-        "checkbox",
+        "checksolo",
         "group-radio",
         "custom"
       ],
-      columnTypes: ["col12", "col6", "col4"],
+      columnTypes: ["col12", "col4", "col4"],
       control: {
         name: "",
         type: "text",
@@ -91,7 +111,8 @@ export default {
         model: "",
         columnType: "col12",
         required: true,
-        regex: ""
+        regex: "",
+        items: ""
       },
       schema: []
     };
@@ -102,13 +123,20 @@ export default {
         case "col4":
           this.control.columnType = { xs4: true, md4: true };
           break;
-        case "col6":
-          this.control.columnType = { xs6: true, md6: true };
+        case "col4":
+          this.control.columnType = { xs4: true, md4: true };
           break;
         case "col12":
         default:
           this.control.columnType = { xs12: true, md12: true };
           break;
+      }
+      //  only for test
+      if (this.control.type === "group-radio") {
+        this.control.items = [
+          { label: "female", value: 1 },
+          { label: "male", value: 0 }
+        ];
       }
       this.schema.push({ ...this.control });
 
@@ -121,6 +149,7 @@ export default {
       this.control.columnType = "col12";
       this.control.required = true;
       this.control.regex = "";
+      this.control.items = "";
       console.log(this.schema);
     },
     buildForm() {}

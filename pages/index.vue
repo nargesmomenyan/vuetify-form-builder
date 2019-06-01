@@ -81,7 +81,11 @@
         <h4>Form</h4>
       </v-card-title>
       <v-card-text>
-        <FormVuetify :schema="schema"/>
+        <FormVuetify :schema="schema" @submit="formSubmit" @cancel="formCancel">
+          <!-- <template slot="action">
+            <v-btn class="btn">Save</v-btn>
+          </template>-->
+        </FormVuetify>
       </v-card-text>
     </v-card>
   </div>
@@ -98,7 +102,7 @@ export default {
         "text-area",
         "select",
         "checksolo",
-        "group-radio",
+        "radio-group",
         "custom"
       ],
       columnTypes: ["col12", "col4", "col4"],
@@ -131,13 +135,6 @@ export default {
           this.control.columnType = { xs12: true, md12: true };
           break;
       }
-      //  only for test
-      if (this.control.type === "group-radio") {
-        this.control.items = [
-          { label: "female", value: 1 },
-          { label: "male", value: 0 }
-        ];
-      }
       this.schema.push({ ...this.control });
 
       this.control.label = "";
@@ -152,11 +149,21 @@ export default {
       this.control.items = "";
       console.log(this.schema);
     },
-    buildForm() {}
+    formSubmit($event) {
+      console.log($event);
+    },
+    formCancel($event) {
+      console.log($event);
+    }
   },
   components: {
     FormVuetify
   }
 };
 </script>
+<style>
+.btn {
+  float: right;
+}
+</style>
 

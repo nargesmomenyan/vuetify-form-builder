@@ -99,7 +99,8 @@ export default {
         "select",
         "checksolo",
         "group-radio",
-        "custom"
+        "custom",
+        "sample"
       ],
       columnTypes: ["col12", "col4", "col4"],
       control: {
